@@ -45,19 +45,18 @@ jobs:
               sudo usermod -aG docker ec2-user
             fi
 
-            sudo chown -R ec2-user:ec2-user /home/ec2-user/hello-world
             git config --global --add safe.directory /home/ec2-user/hello-world
-
             git pull origin main
 
+            # Stop old container (prevents port 3000 conflict)
             sudo docker stop npm-app || true
             sudo docker rm npm-app || true
 
-            sudo docker rmi npm-hello-app || true
+            # Pull latest image from DockerHub (IMPORTANT)
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/npm-hello-world:latest
 
-            sudo docker build -t npm-hello-app .
-
+            # Run container
             sudo docker run -d \
-                -p 3000:3000 \
-                --name npm-app \
-                npm-hello-app
+              -p 3000:3000 \
+              --name npm-app \
+              ${{ secrets.DOCKER_USERNAME }}/npm-hello-world:latest
