@@ -22,6 +22,9 @@ jobs:
       - name: Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/npm-hello-app:latest .
 
+      - name: Docker images
+        run: docker images
+
       - name: Push an Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/npm-hello-world:latest
           
