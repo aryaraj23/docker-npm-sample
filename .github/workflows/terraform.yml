@@ -61,5 +61,6 @@ jobs:
             # Run container
             sudo docker run -d \
               -p 3000:3000 \
+              --restart always \
               --name npm-app \
               ${{ secrets.DOCKER_USERNAME }}/npm-hello-world:latest
