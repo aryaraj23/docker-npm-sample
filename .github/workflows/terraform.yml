@@ -37,6 +37,8 @@ jobs:
           script: |
             cd /home/ec2-user/hello-world || exit 1
 
+            sudo fuser -k 3000/tcp || true
+            
             if ! command -v docker &> /dev/null; then
               sudo yum update -y
               sudo yum install -y docker
@@ -47,6 +49,7 @@ jobs:
 
             git config --global --add safe.directory /home/ec2-user/hello-world
             git pull origin main
+
 
             # Stop old container (prevents port 3000 conflict)
             sudo docker stop npm-app || true
